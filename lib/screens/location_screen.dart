@@ -3,24 +3,42 @@ import 'package:climate_update/utilities/constants.dart';
 import 'package:climate_update/services/weather.dart';
 import 'package:climate_update/screens/city_screen.dart';
 
-class LocationScreen extends StatefulWidget {
+class
+
+LocationScreen
+
+    extends
+
+    StatefulWidget
+
+{
   LocationScreen({this.locationWeather});
 
   final locationWeather;
+
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
+class
+
+_LocationScreenState
+
+    extends
+
+    State<LocationScreen>
+
+{
   WeatherModel weather = WeatherModel();
   int temperature = 0;
-  late String weatherIcon ;
-  late String cityName ;
-  late String weatherMessage;
+  String weatherIcon = 'ERROR'; // Initialize with a default value
+  String cityName = '';
+  String weatherMessage = 'Unable to get weather data'; // Initial error message
 
   @override
+
+
   void initState() {
-    // TODO: implement initState
     super.initState();
     updateUI(widget.locationWeather);
   }
@@ -28,14 +46,10 @@ class _LocationScreenState extends State<LocationScreen> {
   void updateUI(dynamic weatherData) {
     setState(() {
       if (weatherData == null) {
-        temperature = 0;
-        weatherIcon = 'ERROR';
-        weatherMessage = 'Unable to get weather data';
-        cityName = '';
-        return;
+        return; // No need to update state if weatherData is null
       }
-      double temp = weatherData['main']['temp'];
-      temperature = temp.toInt();
+
+      temperature = (weatherData['main']['temp'] as num).toInt(); // Ensure casting
       var condition = weatherData['weather'][0]['id'];
       weatherIcon = weather.getWeatherIcon(condition);
       weatherMessage = weather.getMessage(temperature);
